@@ -1,0 +1,25 @@
+{
+  "_comment": "Copy this file to mcp_config.json and fill in real credentials. Never commit mcp_config.json.",
+
+  "mcpServers": {
+    "gmail": {
+      "command": "npx",
+      "args": ["-y", "@gongrzhe/server-gmail-autoauth"],
+      "env": {
+        "GMAIL_OAUTH_CLIENT_ID":     "YOUR_CLIENT_ID.apps.googleusercontent.com",
+        "GMAIL_OAUTH_CLIENT_SECRET": "YOUR_CLIENT_SECRET",
+        "GMAIL_OAUTH_REFRESH_TOKEN": "YOUR_REFRESH_TOKEN"
+      }
+    }
+  },
+
+  "send_tool": {
+    "_comment": "Adjust name/params to match your Gmail MCP server's tool signature.",
+    "name": "send_email",
+    "params": {
+      "to_field":      "to",
+      "subject_field": "subject",
+      "body_field":    "body"
+    }
+  }
+}
