@@ -1,0 +1,10 @@
+# Enron Email Deduplication Pipeline
+# Python 3.10+
+#
+# Install: pip install -r requirements.txt
+#
+# All other dependencies (email, sqlite3, csv, re, pathlib, argparse,
+# subprocess, json, time, collections, dataclasses, contextlib,
+# threading, queue, datetime) are Python standard library.
+
+rapidfuzz==3.13.0   # fuzzy string matching for duplicate body comparison

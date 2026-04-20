@@ -44,26 +44,37 @@ to run end-to-end in a reasonable time.
 
 ## Tech Stack
 
-- Python 3.10+
-- SQLite for structured storage
-- thefuzz / rapidfuzz for fuzzy duplicate detection
-- Gmail MCP server for email notifications
+| Dependency | Version | Purpose |
+|---|---|---|
+| Python | 3.10+ | Runtime |
+| `rapidfuzz` | 3.13.0 | Fuzzy string matching for duplicate body comparison |
+| `sqlite3` | stdlib | Structured email storage |
+| `email` | stdlib | RFC 2822 parsing |
+| Gmail MCP server | — | Live notification delivery (optional) |
+
+All other dependencies (`csv`, `re`, `pathlib`, `argparse`, `subprocess`, `json`, `dataclasses`, `collections`, `threading`, `queue`) are Python standard library. Install with:
+
+```bash
+pip install -r requirements.txt
+```
 
 ## Project Structure
 
 ```
 enron-mail-pipeline/
-├── main.py              # Entry point — runs full pipeline
+├── main.py                  # Entry point — runs full pipeline
+├── requirements.txt         # Python dependencies (1 third-party package)
 ├── src/
 │   ├── __init__.py
-│   ├── parser.py        # RFC 2822 parsing, field extraction, body separation
-│   ├── database.py      # SQLite schema, bulk insert, connection helpers
-│   ├── dedup.py         # Duplicate detection with fuzzy matching
-│   └── notifier.py      # Email notification via MCP / draft generation
-├── schema.sql           # Database schema DDL (auto-generated)
-├── sample_queries.sql   # Demo queries with expected output comments
-├── AI_USAGE.md          # AI-assisted implementation log
-└── maildir/             # Curated dataset (5 mailboxes, 11,239 emails)
+│   ├── parser.py            # RFC 2822 parsing, field extraction, body separation
+│   ├── database.py          # SQLite schema, bulk insert, connection helpers
+│   ├── dedup.py             # Duplicate detection with fuzzy matching
+│   └── notifier.py          # Email notification via MCP / draft generation
+├── schema.sql               # Database schema DDL (auto-generated)
+├── sample_queries.sql       # Demo queries with expected output comments
+├── mcp_config.json.example  # Gmail MCP server config template
+├── AI_USAGE.md              # AI-assisted implementation log
+└── maildir/                 # Curated dataset (5 mailboxes, 11,239 emails)
 ```
 
 ## Pipeline Components
@@ -122,12 +133,19 @@ Five ready-to-run queries against `enron.db`:
 ## Usage
 
 ```bash
-# Parse and load all emails into enron.db
-python -m src.database
+pip install -r requirements.txt
 
-# Run full pipeline (dedup + notify)
-python main.py            # dry run — drafts only, no live send
-python main.py --send-live  # send live notification emails via Gmail MCP
+# Full pipeline — dry run (saves .eml notifications to output/replies/)
+python main.py
+
+# Full pipeline — live Gmail notifications via MCP
+python main.py --send-live
+
+# Custom database path
+python main.py --db-path custom.db
+
+# Process a subset of mailboxes
+python main.py --mailboxes buy-r grigsby-m
 
 # Run sample queries
 sqlite3 enron.db < sample_queries.sql
