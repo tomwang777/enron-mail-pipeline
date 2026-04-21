@@ -42,7 +42,7 @@ Notable: 4.6% of emails have no body (forwarded-only messages); 23% contain forw
 
 **MCP Integration Documentation**
 
-**1.	Which MCP server you chose and why.**
+**1.	Which MCP server you chose and why.** Gmail MCP Server. 
 
 **2.	Step-by-step setup instructions (how to configure credentials, register the MCP server with Claude Code or your AI tool).**
 
@@ -56,9 +56,9 @@ Notable: 4.6% of emails have no body (forwarded-only messages); 23% contain forw
 
 **AI Tool Usage Documentation**
 
-**21.	Tool Used:** Name and version of the AI coding tool.
+**21.	Tool Used:** Claude Code Version 2.1.114 Sonnet 4.6 Used
 
-**22.	Prompting Strategy:** How did you break down the problem for the AI? Did you prompt task-by-task or provide the full spec at once? Include 3–5 example prompts you used and explain why you structured them that way.
+**22.	Prompting Strategy:** How did you break down the problem for the AI?  Did you prompt task-by-task or provide the full spec at once? Include 3–5 example prompts you used and explain why you structured them that way.
 
 **23.	Iterations & Debugging:** Describe at least 2 cases where the AI-generated code did not work on the first attempt. What went wrong? How did you refine your prompts or manually fix the issue?
 
