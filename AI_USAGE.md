@@ -40,9 +40,20 @@
 
 Notable: 4.6% of emails have no body (forwarded-only messages); 23% contain forwarded content blocks.
 
-21.	Tool Used: Name and version of the AI coding tool.
-22.	Prompting Strategy: How did you break down the problem for the AI? Did you prompt task-by-task or provide the full spec at once? Include 3–5 example prompts you used and explain why you structured them that way.
-23.	Iterations & Debugging: Describe at least 2 cases where the AI-generated code did not work on the first attempt. What went wrong? How did you refine your prompts or manually fix the issue?
-24.	What You Wrote vs. What AI Wrote: Provide a rough percentage breakdown and identify specific sections you wrote manually vs. AI-generated.
-25.	Lessons Learned: What worked well with AI assistance? What was harder than expected?
+**MCP Integration Documentation**
+
+**1.	Which MCP server you chose and why.**
+**2.	Step-by-step setup instructions (how to configure credentials, register the MCP server with Claude Code or your AI tool).**
+**3.	How you prompted the AI tool to use the MCP send_email tool — include example prompts.**
+**4.	Any issues encountered during MCP setup or sending, and how you resolved them.**
+**5.	A screenshot or log excerpt showing at least one successful email send in live mode.**
+
+
+**AI Tool Usage Documentation**
+
+**21.	Tool Used:** Name and version of the AI coding tool.
+**22.	Prompting Strategy:** How did you break down the problem for the AI? Did you prompt task-by-task or provide the full spec at once? Include 3–5 example prompts you used and explain why you structured them that way.
+**23.	Iterations & Debugging:** Describe at least 2 cases where the AI-generated code did not work on the first attempt. What went wrong? How did you refine your prompts or manually fix the issue?
+**24.	What You Wrote vs. What AI Wrote**: Provide a rough percentage breakdown and identify specific sections you wrote manually vs. AI-generated.
+**25.	Lessons Learned**: What worked well with AI assistance? What was harder than expected?
 
