@@ -1,0 +1,23 @@
+# MCP credentials
+.gmail-mcp/
+gcp-oauth.keys.json
+credentials.json
+token.json
+mcp_config.json
+
+# Claude Code internals
+.claude/
+
+# Session artifacts
+session_*.jsonl
+session_transcript.md
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# macOS
+.DS_Store
