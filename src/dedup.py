@@ -206,7 +206,7 @@ def run(
                 pair = (min(original_idx, di), max(original_idx, di))
                 score = scores.get(pair) or body_similarity(original.body, dup.body)
 
-                db_updates.append((True, dup.message_id, original.message_id))
+                db_updates.append((True, dup.message_id, original.message_id, round(score, 2)))
                 report_rows.append({
                     "duplicate_message_id": dup.message_id,
                     "original_message_id":  original.message_id,
@@ -221,21 +221,49 @@ def run(
     if db_updates:
         with conn:
             conn.executemany(
-                "UPDATE emails SET is_duplicate=?, duplicate_of=? WHERE message_id=?",
-                [(flag, orig, dup) for flag, dup, orig in db_updates],
+                "UPDATE emails SET is_duplicate=?, duplicate_of=?, similarity_score=? WHERE message_id=?",
+                [(flag, orig, score, dup) for flag, dup, orig, score in db_updates],
             )
 
-    conn.close()
-
-    # --- Write CSV report ---
+    # --- Write CSV report (all duplicates in DB, not just newly found) ---
     fieldnames = [
         "duplicate_message_id", "original_message_id", "subject",
         "from_address", "duplicate_date", "original_date", "similarity_score",
     ]
+    all_rows_sql = """
+        SELECT
+            d.message_id      AS dup_id,
+            o.message_id      AS orig_id,
+            d.subject,
+            d.from_address,
+            d.date            AS dup_date,
+            o.date            AS orig_date,
+            d.similarity_score
+        FROM   emails d
+        JOIN   emails o ON o.message_id = d.duplicate_of
+        WHERE  d.is_duplicate = TRUE
+        ORDER  BY d.date ASC
+    """
+    all_db_rows = conn.execute(all_rows_sql).fetchall()
+    conn.close()
+
+    all_report_rows = [
+        {
+            "duplicate_message_id": r["dup_id"],
+            "original_message_id":  r["orig_id"],
+            "subject":              r["subject"] or "",
+            "from_address":         r["from_address"] or "",
+            "duplicate_date":       r["dup_date"] or "",
+            "original_date":        r["orig_date"] or "",
+            "similarity_score":     r["similarity_score"] if r["similarity_score"] is not None else "",
+        }
+        for r in all_db_rows
+    ]
+
     with open(report_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(report_rows)
+        writer.writerows(all_report_rows)
 
     avg_size = round(sum(cluster_sizes) / len(cluster_sizes), 2) if cluster_sizes else 0.0
     return {

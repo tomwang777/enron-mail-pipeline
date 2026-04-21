@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS emails (
     quoted_content    TEXT,
     is_duplicate      BOOLEAN  NOT NULL DEFAULT FALSE,
     duplicate_of      TEXT     REFERENCES emails(message_id),
+    similarity_score  REAL,
     notification_sent BOOLEAN  NOT NULL DEFAULT FALSE,
     notification_date DATETIME,
     created_at        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
