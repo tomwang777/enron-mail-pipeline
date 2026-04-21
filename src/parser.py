@@ -373,7 +373,7 @@ def discover_files(maildir: Path = MAILDIR) -> Generator[Path, None, None]:
         if not mbox_path.is_dir():
             print(f"[warn] mailbox not found: {mbox_path}")
             continue
-        yield from (p for p in mbox_path.rglob("*") if p.is_file())
+        yield from (p for p in mbox_path.rglob("*") if p.is_file() and not p.name.startswith("."))
 
 
 # ---------------------------------------------------------------------------

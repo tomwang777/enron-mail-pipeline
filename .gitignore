@@ -12,6 +12,13 @@ mcp_config.json
 session_*.jsonl
 session_transcript.md
 
+# Generated / runtime output
+enron.db
+enron.db-shm
+enron.db-wal
+duplicates_report.csv
+output/
+
 # Python
 venv/
 __pycache__/

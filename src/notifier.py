@@ -376,21 +376,22 @@ def run(
                 status = "error"
                 stats["errors"] += 1
 
-            _append_send_log(
-                send_log,
-                recipient=g.dup_from,
-                subject=subj,
-                status=status,
-                error=error_msg,
-            )
+            if live:
+                _append_send_log(
+                    send_log,
+                    recipient=g.dup_from,
+                    subject=subj,
+                    status=status,
+                    error=error_msg,
+                )
 
     finally:
         if mcp:
             mcp.close()
 
-    # Mark ALL duplicates in each notified group as sent — not just the latest
-    # representative — so re-running the notifier doesn't re-notify the same groups.
-    if sent_orig_ids:
+    # Mark ALL duplicates in each notified group as sent — only in live mode.
+    # Dry run must not mutate notification state so re-runs stay idempotent.
+    if live and sent_orig_ids:
         now_iso = datetime.now(timezone.utc).isoformat()
         placeholders = ",".join("?" * len(sent_orig_ids))
         with conn:
