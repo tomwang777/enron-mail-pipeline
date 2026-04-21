@@ -39,3 +39,10 @@
 | quoted_content | 1.4% |
 
 Notable: 4.6% of emails have no body (forwarded-only messages); 23% contain forwarded content blocks.
+
+21.	Tool Used: Name and version of the AI coding tool.
+22.	Prompting Strategy: How did you break down the problem for the AI? Did you prompt task-by-task or provide the full spec at once? Include 3–5 example prompts you used and explain why you structured them that way.
+23.	Iterations & Debugging: Describe at least 2 cases where the AI-generated code did not work on the first attempt. What went wrong? How did you refine your prompts or manually fix the issue?
+24.	What You Wrote vs. What AI Wrote: Provide a rough percentage breakdown and identify specific sections you wrote manually vs. AI-generated.
+25.	Lessons Learned: What worked well with AI assistance? What was harder than expected?
+
