@@ -135,6 +135,18 @@ def _email_row(e: ParsedEmail) -> tuple:  # type: ignore[type-arg]
     )
 
 
+def reset_duplicate_flags(db_path: Path = DB_PATH) -> None:
+    """Clear all duplicate and notification flags so the next run starts fresh."""
+    with _connect(db_path) as conn:
+        conn.execute("""
+            UPDATE emails
+            SET is_duplicate      = FALSE,
+                duplicate_of      = NULL,
+                notification_sent = FALSE,
+                notification_date = NULL
+        """)
+
+
 def insert_emails(
     emails: list[ParsedEmail],
     db_path: Path = DB_PATH,

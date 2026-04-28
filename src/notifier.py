@@ -12,6 +12,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import random
 import re
 import sqlite3
 import subprocess
@@ -21,6 +22,8 @@ from pathlib import Path
 from queue import Empty, Queue
 from threading import Thread
 from typing import NamedTuple
+
+NOTIFY_EMAIL = "wangchengabvd@gmail.com"
 
 _ROOT = Path(__file__).resolve().parent.parent
 
@@ -306,7 +309,7 @@ class MCPGmailClient:
             {
                 "name": self._tool_name,
                 "arguments": {
-                    self._to_field:      to,
+                    self._to_field:      [to],
                     self._subject_field: subject,
                     self._body_field:    body,
                 },
@@ -347,12 +350,16 @@ def run(
     scores = _load_similarity_scores(report_csv)
     groups = _load_pending_groups(conn, scores)
 
+    # Pick one random group as the example notification for this run
+    if groups:
+        groups = [random.choice(groups)]
+
     mcp: MCPGmailClient | None = None
     if live:
         mcp = MCPGmailClient(mcp_config)
 
     stats = {"attempted": 0, "sent": 0, "skipped": 0, "errors": 0}
-    sent_orig_ids: list[str] = []  # original message_ids whose groups were notified
+    sent_orig_ids: list[str] = []
 
     try:
         for g in groups:
@@ -362,7 +369,7 @@ def run(
 
             try:
                 if live and mcp:
-                    mcp.send(g.dup_from, subj, body)
+                    mcp.send(NOTIFY_EMAIL, subj, body)
                     status = "sent"
                 else:
                     path = _write_eml(g, output_dir)
@@ -379,7 +386,7 @@ def run(
             if live:
                 _append_send_log(
                     send_log,
-                    recipient=g.dup_from,
+                    recipient=NOTIFY_EMAIL,
                     subject=subj,
                     status=status,
                     error=error_msg,

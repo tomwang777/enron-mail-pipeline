@@ -89,6 +89,7 @@ def run_pipeline(
     # ------------------------------------------------------------------
     # 3 · Dedup
     # ------------------------------------------------------------------
+    db_mod.reset_duplicate_flags(db_path)
     _step(3, "Detecting duplicates …")
     t = time.perf_counter()
     dedup_stats = dedup_mod.run(db_path=db_path)
